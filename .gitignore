@@ -1,0 +1,27 @@
+# Dependencies & Workspace links
+node_modules/
+.pnpm-store/
+
+# Build & Deployment Outputs
+dist/
+build/
+.turbo/
+coverage/
+*.zip
+.vite/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS & IDE Files
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.log
