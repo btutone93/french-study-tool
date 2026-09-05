@@ -2,19 +2,24 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
+  "main": "./dist/index.js",
   "scripts": {
-    "build": "tsup src/index.ts --format cjs --no-splitting",
     "dev": "tsx watch src/index.ts",
-    "lint": "echo 'No lint specified'"
+    "build": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist coverage"
   },
   "dependencies": {
-    "@repo/shared": "*",
     "@hono/node-server": "^1.10.0",
+    "@repo/shared": "*",
     "hono": "^4.2.0",
     "openai": "^4.33.0"
   },
   "devDependencies": {
-    "tsup": "^8.0.0",
+    "@types/node": "26.4.1",
+    "esbuild": "^0.28.2",
     "tsx": "^4.7.0"
   }
 }

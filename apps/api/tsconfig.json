@@ -15,7 +15,8 @@
     /* Modern relative path mapping without baseUrl */
     "paths": {
       "@repo/shared": ["../../packages/shared/src/index.ts"]
-    }
+    },
+    "types": ["node"]
   },
   "include": ["src"],
   "references": [

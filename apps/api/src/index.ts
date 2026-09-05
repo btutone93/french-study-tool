@@ -1,5 +1,6 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { handle } from "hono/aws-lambda";
 import { EvaluationRequestSchema } from "@repo/shared";
 
 const app = new Hono();
@@ -21,7 +22,12 @@ app.post("/evaluate", async (c) => {
   });
 });
 
-const port = 3001;
-console.log(`API running on http://localhost:${port}`);
+// 1. Production handler export for AWS Lambda
+export const handler = handle(app);
 
-serve({ fetch: app.fetch, port });
+// 2. Local development server fallback
+if (process.env.NODE_ENV !== "production") {
+  import("@hono/node-server").then(({ serve }) => {
+    serve({ fetch: app.fetch, port: 3001 });
+  });
+}
