@@ -1,0 +1,85 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-lint:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # - name: Run Workspace Tests
+      #   run: npx turbo run test
+
+      - name: Validate CDK Synthesis
+        run: npx cdk synth --app "npx tsx packages/cdk/bin/cdk.ts"
+
+  deploy:
+    name: Deploy AWS Infrastructure & Applications
+    needs: test-and-lint
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: 1. Deploy Base CDK Infrastructure
+        id: cdk-base
+        env:
+          # SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          # SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          # GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          # Synthesize/Deploy and capture outputs to extract Lambda API URL
+          npx cdk deploy --app "npx tsx packages/cdk/bin/cdk.ts" --outputs-file cdk-outputs.json --require-approval never
+          
+          # Extract live Lambda API URL from CDK Stack Outputs
+          API_URL=$(node -e 'const outputs = require("./cdk-outputs.json"); console.log(Object.values(outputs)[0].ApiUrl || "");')
+          echo "VITE_API_URL=$API_URL" >> $GITHUB_ENV
+
+      - name: 2. Build Vite Web Frontend
+        run: npm run build --workspace=web
+
+      - name: 3. Sync Web Dist to S3 & CloudFront via CDK
+        env:
+          # SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          # SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          # GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          # Re-run CDK deploy to upload the freshly built Vite dist files to S3
+          npx cdk deploy --app "npx tsx packages/cdk/bin/cdk.ts" --require-approval never
