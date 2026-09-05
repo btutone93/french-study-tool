@@ -9,6 +9,7 @@ build/
 coverage/
 *.zip
 .vite/
+cdk.out/
 
 # Environment Variables & Secrets
 .env

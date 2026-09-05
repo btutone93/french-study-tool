@@ -5,7 +5,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "deploy": "npm run build --workspace=web && cdk deploy"
   },
   "devDependencies": {
     "@swc/core": "^1.15.0",
