@@ -60,7 +60,7 @@ jobs:
 
       - name: 1. Deploy Base CDK Infrastructure
         id: cdk-base
-        env:
+        # env:
           # SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           # SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           # GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
@@ -76,7 +76,7 @@ jobs:
         run: npm run build --workspace=web
 
       - name: 3. Sync Web Dist to S3 & CloudFront via CDK
-        env:
+        # env:
           # SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           # SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           # GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
