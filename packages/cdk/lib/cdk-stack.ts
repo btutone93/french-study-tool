@@ -7,6 +7,7 @@ import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import * as path from 'path';
+import * as fs from 'fs';
 
 export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -71,13 +72,23 @@ export class CdkStack extends cdk.Stack {
       ],
     });
 
+    // Ensure path exists for synth
+    const webDistPath = path.join(__dirname, '../../../apps/web/dist');
+    if (!fs.existsSync(webDistPath)) {
+      fs.mkdirSync(webDistPath, { recursive: true });
+    }
+
     // 4. Deploy local Vite dist build assets to S3 and invalidate CloudFront cache
     new s3deploy.BucketDeployment(this, 'DeployViteSite', {
-      sources: [s3deploy.Source.asset(path.join(__dirname, '../../../apps/web/dist'))],
+      sources: [
+        s3deploy.Source.asset(webDistPath),
+        s3deploy.Source.jsonData('config.json', {
+          apiUrl: fnUrl.url,
+        }),
+      ],
       destinationBucket: websiteBucket,
       distribution,
       distributionPaths: ['/*'],
-      // Explicitly set memory size for CDK's internal helper Lambda
       memoryLimit: 512,
     });
 
