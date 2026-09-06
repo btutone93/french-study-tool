@@ -83,7 +83,7 @@ export class CdkStack extends cdk.Stack {
       sources: [
         s3deploy.Source.asset(webDistPath),
         s3deploy.Source.jsonData('config.json', {
-          apiUrl: cdk.Fn.select(0, cdk.Fn.split('/', fnUrl.url)),
+          apiUrl: fnUrl.url,
         }),
       ],
       destinationBucket: websiteBucket,

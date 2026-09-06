@@ -1,6 +1,9 @@
 // Fallback for local development
 let API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
+// Normalize fallback initially (in case VITE_API_URL has a trailing slash)
+API_BASE_URL = API_BASE_URL.replace(/\/+$/, '');
+
 // Fetch runtime config in production
 export async function initConfig() {
   try {
