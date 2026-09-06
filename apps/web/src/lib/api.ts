@@ -10,7 +10,7 @@ export async function initConfig() {
     const res = await fetch('/config.json');
     const config = await res.json();
     if (config.apiUrl) {
-      API_BASE_URL = config.apiUrl;
+      API_BASE_URL = config.apiUrl.replace(/\/+$/, '');
     }
   } catch {
     console.warn('Could not load /config.json, using fallback URL');
