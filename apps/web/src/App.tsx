@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { EvaluationRequest } from '@repo/shared';
+import { fetchApi } from './lib/api';
 
 export default function App() {
   const [sentence, setSentence] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload: EvaluationRequest = {
       userSentence: sentence,
@@ -12,7 +13,16 @@ export default function App() {
       targetSubject: 'Elle',
       requiredVocab: ['partir'],
     };
+    // need to ensure 
     console.log('Sending payload:', payload);
+
+    const resp = await fetchApi('/evaluate', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+
+    console.log('Received: ', resp);
   };
 
   return (

@@ -24,7 +24,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --engine-strict=false
 
       # - name: Run Workspace Tests
       #   run: npx turbo run test
@@ -49,7 +49,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --engine-strict=false
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
