@@ -62,9 +62,9 @@ jobs:
         run: npm run build --workspace=web
 
       - name: Deploy CDK Infrastructure
-        # env:
+        env:
         #   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         #   SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        #   GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           npx cdk deploy --app "npx tsx packages/cdk/bin/cdk.ts" --require-approval never
