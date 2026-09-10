@@ -15,9 +15,9 @@
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
     "clean": "turbo run clean && rm -rf node_modules",
-    "db:start": "turbo run db:start --filter=@repo/db",
-    "db:reset": "turbo run db:reset --filter=@repo/db && turbo run db:generate-types --filter=@repo/db",
-    "db:generate-types": "turbo run db:generate-types --filter=@repo/db"
+    "db:start": "turbo run db:start --filter=@repo/database",
+    "db:reset": "turbo run db:reset --filter=@repo/database && turbo run db:generate-types --filter=@repo/database",
+    "db:generate-types": "turbo run db:generate-types --filter=@repo/database"
   },
   "keywords": [],
   "author": "",

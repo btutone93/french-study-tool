@@ -23,16 +23,64 @@ jobs:
           node-version: 24
           cache: 'npm'
 
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
       - name: Install Dependencies
         run: npm ci --engine-strict=false
 
       # - name: Run Workspace Tests
       #   run: npx turbo run test
 
+      # Start local Supabase container inside CI runner
+      - name: Start Local Supabase
+        run: npx supabase start
+        working-directory: packages/database
+
+      # Regenerate types from local container to verify schema
+      - name: Regenerate Types & Check for Uncommitted Changes
+        run: |
+          npm run db:generate-types
+          git diff --exit-code packages/database/src/types.ts || (echo "Error: Database types are out of sync with migrations. Run 'npm run db:generate-types' locally and commit." && exit 1)
+
+      # Build entire workspace using Turborepo (runs tsc/builds for apps/api and apps/web)
+      - name: Run Turbo Build & Typecheck
+        run: npx turbo run build
+
       - name: Validate CDK Synthesis
         run: npx cdk synth --app "npx tsx packages/cdk/bin/cdk.ts"
 
-  deploy:
+  deploy-database:
+    runs-on: ubuntu-latest
+    outputs:
+      db-deployed: ${{ steps.db-push.outcome }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link Remote Supabase Project
+        run: npx supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
+        working-directory: packages/database
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+      - name: Apply Pending Migrations to Production
+        id: db-push
+        run: npx supabase db push
+        working-directory: packages/database
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+  deploy-apps:
     name: Deploy Infrastructure & Frontend
     needs: test-and-lint
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -63,8 +111,8 @@ jobs:
 
       - name: Deploy CDK Infrastructure
         env:
-        #   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        #   SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           npx cdk deploy --app "npx tsx packages/cdk/bin/cdk.ts" --require-approval never
