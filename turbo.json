@@ -9,7 +9,7 @@
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "db:generate-types"],
       "outputs": ["dist/**", "build/**"]
     },
     "test": {
@@ -29,6 +29,10 @@
     },
     "clean": {
       "cache": false
+    },
+    "db:generate-types": {
+      "inputs": ["supabase/migrations/**"],
+      "outputs": ["src/types.ts"]
     }
   }
 }

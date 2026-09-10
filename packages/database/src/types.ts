@@ -39,19 +39,31 @@ export type Database = {
           created_at: string
           english: string
           french: string
+          grammatical_number: Database["public"]["Enums"]["grammatical_number"]
+          grammatical_person: Database["public"]["Enums"]["grammatical_person"]
           id: string
+          is_formal: boolean
+          sort_order: number
         }
         Insert: {
           created_at?: string
           english: string
           french: string
+          grammatical_number: Database["public"]["Enums"]["grammatical_number"]
+          grammatical_person: Database["public"]["Enums"]["grammatical_person"]
           id?: string
+          is_formal?: boolean
+          sort_order: number
         }
         Update: {
           created_at?: string
           english?: string
           french?: string
+          grammatical_number?: Database["public"]["Enums"]["grammatical_number"]
+          grammatical_person?: Database["public"]["Enums"]["grammatical_person"]
           id?: string
+          is_formal?: boolean
+          sort_order?: number
         }
         Relationships: []
       }
@@ -63,7 +75,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      grammatical_number: "singular" | "plural"
+      grammatical_person: "1st" | "2nd" | "3rd"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -193,7 +206,10 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      grammatical_number: ["singular", "plural"],
+      grammatical_person: ["1st", "2nd", "3rd"],
+    },
   },
 } as const
 

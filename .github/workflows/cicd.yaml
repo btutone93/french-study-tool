@@ -65,20 +65,11 @@ jobs:
         with:
           version: latest
 
-      - name: Link Remote Supabase Project
-        run: npx supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
-        working-directory: packages/database
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-
       - name: Apply Pending Migrations to Production
         id: db-push
-        run: npx supabase db push
+        run: |
+          npx supabase db push --db-url "postgres://postgres.${{ secrets.SUPABASE_PROJECT_ID }}:${{ secrets.SUPABASE_DB_PASSWORD }}@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
         working-directory: packages/database
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
 
   deploy-apps:
     name: Deploy Infrastructure & Frontend
