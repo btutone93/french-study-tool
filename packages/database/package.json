@@ -1,0 +1,23 @@
+{
+  "name": "@repo/database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/client.ts",
+  "types": "./src/client.ts",
+  "scripts": {
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:diff": "supabase db diff -f",
+    "db:reset": "supabase db reset",
+    "db:generate-types": "supabase gen types typescript --local > src/types.ts",
+    "build": "tsc --noEmit"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "devDependencies": {
+    "supabase": "^2.117.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0"
+  }
+}
