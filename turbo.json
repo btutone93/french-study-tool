@@ -12,6 +12,12 @@
       "dependsOn": ["^build", "db:generate-types"],
       "outputs": ["dist/**", "build/**"]
     },
+    "@repo/database#build": {
+      "outputs": []
+    },
+    "@repo/shared#build": {
+      "outputs": []
+    },
     "test": {
       "dependsOn": ["^build"],
       "outputs": []
