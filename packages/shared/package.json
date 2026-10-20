@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "echo 'No lint specified'"
+    "lint": "echo 'No lint specified'",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "zod": "^3.23.0"

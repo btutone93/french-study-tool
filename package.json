@@ -15,6 +15,7 @@
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
     "clean": "turbo run clean && rm -rf node_modules",
+    "typecheck": "turbo run typecheck",
     "db:start": "turbo run db:start --filter=@repo/database",
     "db:reset": "turbo run db:reset --filter=@repo/database && turbo run db:generate-types --filter=@repo/database",
     "db:generate-types": "turbo run db:generate-types --filter=@repo/database"

@@ -10,7 +10,8 @@
     "db:diff": "supabase db diff -f",
     "db:reset": "supabase db reset",
     "db:generate-types": "supabase gen types typescript --local > src/types.ts",
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "type": "commonjs",

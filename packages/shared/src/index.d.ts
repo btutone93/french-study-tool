@@ -21,12 +21,12 @@ export declare const CorrectionSchema: z.ZodObject<{
     replacementSegment: z.ZodString;
     explanationEn: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    type: "GRAMMAR_AGREEMENT" | "VERB_CONJUGATION" | "INCORRECT_TENSE" | "WRONG_VOCABULARY" | "SPELLING_TYPO" | "UNNATURAL_PHRASING";
+    type: "GRAMMAR_AGREEMENT" | "INCORRECT_TENSE" | "SPELLING_TYPO" | "UNNATURAL_PHRASING" | "VERB_CONJUGATION" | "WRONG_VOCABULARY";
     originalSegment: string;
     replacementSegment: string;
     explanationEn: string;
 }, {
-    type: "GRAMMAR_AGREEMENT" | "VERB_CONJUGATION" | "INCORRECT_TENSE" | "WRONG_VOCABULARY" | "SPELLING_TYPO" | "UNNATURAL_PHRASING";
+    type: "GRAMMAR_AGREEMENT" | "INCORRECT_TENSE" | "SPELLING_TYPO" | "UNNATURAL_PHRASING" | "VERB_CONJUGATION" | "WRONG_VOCABULARY";
     originalSegment: string;
     replacementSegment: string;
     explanationEn: string;
@@ -53,12 +53,12 @@ export declare const EvaluationResponseSchema: z.ZodObject<{
         replacementSegment: z.ZodString;
         explanationEn: z.ZodString;
     }, "strip", z.ZodTypeAny, {
-        type: "GRAMMAR_AGREEMENT" | "VERB_CONJUGATION" | "INCORRECT_TENSE" | "WRONG_VOCABULARY" | "SPELLING_TYPO" | "UNNATURAL_PHRASING";
+        type: "GRAMMAR_AGREEMENT" | "INCORRECT_TENSE" | "SPELLING_TYPO" | "UNNATURAL_PHRASING" | "VERB_CONJUGATION" | "WRONG_VOCABULARY";
         originalSegment: string;
         replacementSegment: string;
         explanationEn: string;
     }, {
-        type: "GRAMMAR_AGREEMENT" | "VERB_CONJUGATION" | "INCORRECT_TENSE" | "WRONG_VOCABULARY" | "SPELLING_TYPO" | "UNNATURAL_PHRASING";
+        type: "GRAMMAR_AGREEMENT" | "INCORRECT_TENSE" | "SPELLING_TYPO" | "UNNATURAL_PHRASING" | "VERB_CONJUGATION" | "WRONG_VOCABULARY";
         originalSegment: string;
         replacementSegment: string;
         explanationEn: string;
@@ -74,7 +74,7 @@ export declare const EvaluationResponseSchema: z.ZodObject<{
         requiredVocabUsed: boolean;
     };
     corrections: {
-        type: "GRAMMAR_AGREEMENT" | "VERB_CONJUGATION" | "INCORRECT_TENSE" | "WRONG_VOCABULARY" | "SPELLING_TYPO" | "UNNATURAL_PHRASING";
+        type: "GRAMMAR_AGREEMENT" | "INCORRECT_TENSE" | "SPELLING_TYPO" | "UNNATURAL_PHRASING" | "VERB_CONJUGATION" | "WRONG_VOCABULARY";
         originalSegment: string;
         replacementSegment: string;
         explanationEn: string;
@@ -90,7 +90,7 @@ export declare const EvaluationResponseSchema: z.ZodObject<{
         requiredVocabUsed: boolean;
     };
     corrections: {
-        type: "GRAMMAR_AGREEMENT" | "VERB_CONJUGATION" | "INCORRECT_TENSE" | "WRONG_VOCABULARY" | "SPELLING_TYPO" | "UNNATURAL_PHRASING";
+        type: "GRAMMAR_AGREEMENT" | "INCORRECT_TENSE" | "SPELLING_TYPO" | "UNNATURAL_PHRASING" | "VERB_CONJUGATION" | "WRONG_VOCABULARY";
         originalSegment: string;
         replacementSegment: string;
         explanationEn: string;

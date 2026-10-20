@@ -39,6 +39,9 @@
     "db:generate-types": {
       "inputs": ["supabase/migrations/**"],
       "outputs": ["src/types.ts"]
+    },
+    "typecheck": {
+      "outputs": []
     }
   }
 }
